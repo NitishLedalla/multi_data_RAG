@@ -1,0 +1,244 @@
+id,customer_name,order_date,total_amount,status,shipping_address
+2,Brandi Martinez,2025-06-09,83.31,Delivered,"71392 Kelly Well
+Fitzgeraldside, NM 77501"
+3,Brandi Martinez,2025-12-18,2349.80,Delivered,"Unit 5594 Box 6584
+DPO AA 94613"
+4,Larry Cook,2026-03-21,3058.13,Delivered,"3460 Fischer Flat
+North Christopher, WI 49313"
+5,Brandi Smith,2026-02-15,1646.48,Delivered,"7750 Cathy Cape
+East Mark, KS 08991"
+7,Paul Woods,2025-10-30,1260.84,Delivered,"8204 Dawson Streets
+North Lauren, PR 79787"
+10,Samuel Johnson,2025-11-26,4016.08,Delivered,"160 Amanda Pike Apt. 728
+Christyshire, WI 23909"
+11,Jeffrey Montgomery,2026-03-05,3041.49,Delivered,"60118 Jonathan Place
+Jackmouth, OK 58713"
+12,Charles Wilson,2025-11-21,74.60,Delivered,"29513 Nash Dale
+East Jillian, AS 10292"
+13,Nichole Hall,2025-11-23,2113.11,Delivered,"182 Justin Common Suite 056
+Victorberg, WV 16816"
+14,Dale Jackson,2025-12-19,2689.98,Delivered,"34903 Linda Drive Apt. 693
+South Lauren, WV 85709"
+15,Gina Yang MD,2025-08-21,4330.42,Delivered,"87495 Wilson Stravenue Suite 870
+South Tammy, VI 22884"
+17,Jeffrey Montgomery,2025-07-21,1346.82,Delivered,"7687 Ian Tunnel
+Lake Meganshire, WA 16823"
+18,Christopher Alexander,2026-01-16,202.50,Delivered,"148 Berry Run Suite 487
+Port Juliamouth, PA 25221"
+19,David Lawrence,2025-12-15,616.87,Delivered,
+20,Chelsey Lane,2026-03-12,4818.57,Delivered,"USNV Smith
+FPO AP 79581"
+22,Jeremiah Taylor,2025-09-17,1599.74,Delivered,"88991 Cory Falls Apt. 988
+Port Sherri, FM 83103"
+23,Angelica Lindsey,2026-02-01,4066.21,Delivered,"93935 Linda Way Suite 097
+Port Williammouth, NJ 37770"
+24,Jose Hayes,2025-12-26,2621.73,Delivered,
+25,Erica Hines,2025-06-20,4659.71,Delivered,
+26,Mandy Spencer,2026-01-23,2049.01,Delivered,"0673 Jessica Way
+Bergfort, AS 46484"
+27,James Morales,2026-03-07,3726.04,Delivered,"42810 Christopher Trafficway
+Marshallfort, TN 85043"
+28,Victor Allen,2025-04-26,1906.52,Delivered,"95397 Bruce Fort Suite 762
+Mccarthyborough, CO 71709"
+29,Allison Ross,2026-03-03,3864.78,Delivered,"9220 Kristen Terrace Apt. 634
+East Gary, NH 44557"
+30,Joseph Wilson,2025-05-22,471.12,Delivered,
+32,Chelsey Lane,2025-12-02,2542.54,Delivered,
+35,Charles Wilson,2025-06-01,65.05,Delivered,"173 Melissa Lights Apt. 948
+Darrenland, AL 53149"
+37,Joseph Douglas,2025-07-22,2660.25,Delivered,
+38,Sue Mitchell,2025-05-22,1612.40,Delivered,"9253 Mccullough Ranch Apt. 202
+Mahoneyfurt, RI 07754"
+41,David Lawrence,2025-12-27,341.40,Delivered,"65643 Jason Unions
+Yatesfort, AS 32786"
+42,Christopher Alexander,2025-12-30,1700.06,Delivered,
+43,Michael Roberts,2025-10-27,3030.42,Delivered,"1737 Estes Brook
+Michaelhaven, AL 13876"
+46,Christopher Ross,2025-09-26,3864.73,Delivered,"85578 Dixon Viaduct
+Fordshire, SC 24500"
+47,Sue Mitchell,2025-05-09,3646.23,Delivered,"35984 Saunders Keys Apt. 514
+Garciaburgh, MP 76913"
+50,Lauren Shaffer,2025-11-07,4162.88,Delivered,"7351 Kirby Fields
+Christinafurt, DE 45308"
+51,Miguel Wood,2025-04-23,227.70,Delivered,"819 Wilkinson Station Suite 840
+Andreamouth, UT 11055"
+52,Jeremy Miller,2026-04-14,441.43,Delivered,"403 Amber Key
+Danielleton, TN 76275"
+55,Madison Smith,2025-11-20,4752.01,Delivered,"Unit 8892 Box 1592
+DPO AE 59274"
+57,Christine Evans,2025-10-23,2511.60,Delivered,"3846 Macias Square
+Carolview, WY 23911"
+58,Makayla Green,2025-04-22,4792.43,Delivered,"496 Michelle Gateway
+West Amber, SC 14720"
+59,Jeremy Miller,2025-07-06,204.02,Delivered,"921 Denise Keys Apt. 454
+Michaelhaven, GA 05381"
+64,Samuel Johnson,2025-06-02,3327.33,Delivered,"77620 Henderson Prairie
+Pettymouth, DC 47618"
+65,Matthew Ross,2026-04-10,790.10,Delivered,"7776 Miller Vista Apt. 982
+Darrenmouth, GA 94787"
+67,Jeffrey Adams,2025-11-07,2981.61,Delivered,"9899 Erin Forks Suite 437
+Williamport, MT 03160"
+68,Sue Mitchell,2025-10-05,4548.50,Delivered,"142 Reed Isle
+Williamsbury, MP 86344"
+70,Johnathan Mitchell,2025-12-05,3671.85,Delivered,"35960 Cameron Plains
+Brownmouth, MH 43050"
+71,Jeremiah Taylor,2025-08-09,2041.99,Delivered,"Unit 0087 Box 2116
+DPO AE 03322"
+72,Johnathan Mitchell,2025-12-17,1852.84,Delivered,
+73,Richard Newton,2025-08-30,4944.35,Delivered,
+74,John Stuart,2025-07-10,3111.09,Delivered,
+75,Alexa Ortiz,2025-11-06,787.85,Delivered,"21466 Bennett Forge Suite 986
+Bennetthaven, GA 19315"
+76,John Webb,2025-10-29,2202.55,Delivered,"49697 Flores Circle Suite 034
+East Andrew, AR 83004"
+77,Larry Cook,2025-08-04,3324.14,Delivered,"2446 Kelley Isle Suite 284
+Jacobshire, MT 79872"
+78,Dale Jackson,2026-02-24,3059.62,Delivered,"89966 Johnson Overpass Apt. 457
+West Amber, IA 16220"
+79,Angelica Lindsey,2025-08-10,4301.70,Delivered,"799 Andrew Island Suite 498
+Timothyside, SC 07296"
+81,Joseph Smith,2026-02-18,1705.60,Delivered,"USNV Olson
+FPO AA 83025"
+82,David Tapia,2025-07-13,3378.79,Delivered,"964 Jason Islands
+East Courtney, MI 39767"
+83,Rebecca Wilson,2026-03-06,2441.67,Delivered,"46023 Brown Grove Apt. 745
+West Monicafort, PR 53112"
+84,April Wilson,2025-11-16,1881.82,Delivered,"45184 Krause Extensions
+Peckton, TN 58979"
+86,Joseph Santiago,2026-04-17,2194.61,Delivered,
+87,Johnathan Mitchell,2026-01-15,3647.06,Delivered,"76744 Joseph Pass Apt. 473
+Port Johnfurt, NY 40458"
+90,Scott King,2026-03-30,1089.05,Delivered,"597 Monica Road Apt. 209
+Williamborough, IL 62794"
+91,Jeremy Miller,2026-04-02,965.36,Delivered,"388 Johnson Canyon Suite 951
+Kristinborough, WI 58700"
+92,Samuel Johnson,2025-05-14,892.98,Delivered,"49082 Whitaker Prairie
+East Christine, AS 44799"
+95,Gina Yang MD,2026-04-04,3131.72,Delivered,"673 James Parkway
+South Julian, AL 23967"
+96,Heather Nelson,2026-02-05,2474.07,Delivered,"442 Fisher Mountain
+Michelleside, NC 81372"
+97,Roberta Jennings,2026-01-27,3743.94,Delivered,
+98,David Tapia,2026-02-18,4468.73,Delivered,"8717 Theresa Ways Suite 011
+Greenfurt, WV 23835"
+100,Heather Nelson,2025-07-24,2611.38,Delivered,"59268 Joseph Island Suite 009
+North Kristin, NY 96267"
+104,Jeffrey Carey,2025-07-20,4207.47,Delivered,
+105,Scott King,2026-03-28,2599.88,Delivered,"0301 Conrad Loop
+Lake Jimmy, PW 70930"
+106,David Tapia,2025-12-10,3260.36,Delivered,"2045 Laura Highway
+East Tamara, WI 83483"
+108,Colton Mitchell,2025-09-18,1016.71,Delivered,"05655 Miller Burg Apt. 311
+Williamsland, GA 77164"
+109,Jeffrey Carey,2025-09-27,1556.28,Delivered,"88312 Walker Village Suite 313
+Port Rachel, NC 47081"
+111,Larry Cook,2025-07-11,1091.18,Delivered,"585 Courtney Circle Apt. 397
+Grahamfurt, VA 70249"
+112,Erica Hines,2025-06-17,4664.84,Delivered,
+114,William Nelson,2026-03-11,258.53,Delivered,"010 Sheri Lights Suite 552
+North Sherylland, DC 92459"
+117,Allison Ross,2026-02-07,372.10,Delivered,
+118,Sarah Martinez,2025-05-01,2307.73,Delivered,"PSC 9468, Box 4508
+APO AE 02380"
+119,Mason Cohen,2025-06-23,3987.49,Delivered,"1101 Anderson Circle
+East Randy, WA 78883"
+120,Michael Roberts,2025-11-12,4126.49,Delivered,"09700 Phillips Branch
+New Chelseyshire, IA 95546"
+121,Matthew Ross,2025-10-10,1962.41,Delivered,"USNS Day
+FPO AE 69257"
+122,Christopher Ross,2025-09-23,2034.55,Delivered,"6578 Rebecca Grove Apt. 794
+Tiffanyview, DE 10210"
+123,Donna Smith DVM,2025-08-11,4662.78,Delivered,"8428 Jones Ranch
+Pennyshire, ME 29107"
+124,Karen Anderson,2026-02-24,1920.58,Delivered,"20669 Caldwell Shoal Suite 710
+Sharonport, NM 99564"
+125,Angelica Lindsey,2026-03-04,1206.16,Delivered,"429 Lori Islands
+North Jeffrey, UT 05048"
+128,Sandra Smith,2026-01-13,2738.88,Delivered,
+131,David Miller,2025-12-27,3413.10,Delivered,"28273 Tammy Brook Apt. 175
+North Destinymouth, CT 30087"
+132,Larry Cook,2026-03-11,3589.16,Delivered,"074 Brian Estate
+North Mary, GU 22291"
+133,Chelsey Lane,2025-07-15,656.36,Delivered,"815 Robbins Hills Apt. 125
+Tuckermouth, AK 41566"
+136,Sandra Smith,2025-05-25,1698.81,Delivered,"5577 Melissa Club
+North Brenda, NM 20992"
+137,Rebecca Wilson,2025-09-05,352.39,Delivered,"51880 Beth Mews
+New Diane, MT 25681"
+138,Scott King,2025-12-12,1179.18,Delivered,"14460 Teresa Ferry Suite 195
+Rebeccahaven, MI 83348"
+140,April Wilson,2025-10-18,3974.40,Delivered,"369 Sue Street
+Oliviachester, OK 49452"
+142,Mandy Spencer,2025-12-12,1484.36,Delivered,"30601 Trujillo Squares
+Johnsonfurt, WI 65376"
+144,Victor Allen,2025-08-09,1306.49,Delivered,"6757 Martinez Springs Suite 839
+New David, CA 91378"
+146,Michael Roberts,2026-02-13,2161.20,Delivered,"USCGC Wright
+FPO AE 83380"
+147,William Nelson,2025-06-13,1097.24,Delivered,"4649 Eric Forest Suite 694
+North Erinland, MD 33297"
+148,David Foster,2025-06-13,2759.76,Delivered,"42624 Jennifer Vista
+West John, OH 31145"
+149,Sarah Martinez,2025-07-11,3236.96,Delivered,"3154 Lucas Flat Apt. 570
+Tonimouth, NM 81838"
+150,Ann Garcia,2025-11-04,4568.18,Delivered,"80876 Bryan Stream
+North Dennis, DE 18818"
+151,Jeffrey Montgomery,2025-05-19,313.09,Delivered,
+152,Karen Anderson,2025-07-22,1183.07,Delivered,"13363 Robin Junction Suite 076
+East Ashleyside, PR 86150"
+153,Victor Allen,2025-06-18,163.38,Delivered,
+154,Timothy Brown,2025-12-13,4726.17,Delivered,
+158,Katherine Myers,2025-07-02,2187.55,Delivered,"089 Yang Heights
+Ashleyport, FM 70305"
+159,Brandi Martinez,2025-09-15,787.55,Delivered,"113 Kelly Vista Apt. 923
+Lake Christine, OK 71308"
+160,Karen Anderson,2026-04-07,1367.90,Delivered,"6684 Moore Summit
+West Michelle, IA 53674"
+161,Robert Ortiz,2025-06-25,3096.90,Delivered,
+162,Joseph Santiago,2025-11-24,4428.39,Delivered,"18083 Joseph Square Apt. 196
+Olsonport, ID 18067"
+163,Sarah Murray,2025-10-01,3603.36,Delivered,"01720 Kaitlyn Islands Apt. 021
+Bellborough, MI 95612"
+165,Gloria Perez,2025-11-19,2243.97,Delivered,"461 Frederick Crossing
+North Michael, DC 35725"
+166,John Webb,2025-06-19,2851.00,Delivered,"PSC 5435, Box 2967
+APO AP 51890"
+167,Jeffrey Carey,2025-09-30,2202.43,Delivered,"49193 Taylor Turnpike
+South Craig, DE 58793"
+168,Rebecca Williamson,2025-08-20,1952.75,Delivered,"642 Ramirez Key Apt. 579
+Charlesbury, OH 56867"
+170,Jeremy Miller,2025-09-12,2761.55,Delivered,"7624 English Key Suite 350
+North Johnhaven, WY 99322"
+171,Roberta Jennings,2025-07-25,4200.38,Delivered,"8210 Chelsea Park Apt. 606
+East Claudiabury, LA 86767"
+174,Dale Jackson,2025-11-13,3049.18,Delivered,"19110 Joseph Village
+South Benjamin, AR 24910"
+175,John Stuart,2025-05-30,3133.27,Delivered,"82401 Nicole Squares
+Tracyport, UT 51024"
+176,David Miller,2025-10-29,197.25,Delivered,"1944 Brett Cliffs Suite 461
+West Nicole, NC 64569"
+179,Leah Crane,2025-12-08,641.73,Delivered,"3690 Erica Stream
+Leefurt, IA 91125"
+182,Brandi Martinez,2026-01-08,1498.99,Delivered,
+183,Brittany Roy,2025-08-27,4487.70,Delivered,"2343 Perry Alley
+Lake Dalton, GU 14042"
+184,Timothy Brown,2025-05-30,145.66,Delivered,"864 Harrington Views
+Mooretown, FL 37986"
+187,Mandy Spencer,2025-09-11,3456.64,Delivered,"59798 Jose Summit Suite 771
+Cathyberg, IA 67320"
+188,Rebecca Wilson,2025-09-03,4489.84,Delivered,"PSC 8308, Box 6316
+APO AE 03278"
+189,John Rogers,2025-09-09,624.69,Delivered,"14418 Leonard Gateway
+South Johntown, NE 06711"
+192,Nichole Hall,2025-08-30,221.37,Delivered,"1718 Kathryn Prairie Suite 133
+North Scott, MS 89422"
+193,Erik Johnson,2025-10-20,1822.47,Delivered,"96042 Anderson Rapid Apt. 548
+East Cathyburgh, ME 53783"
+194,Jeffrey Montgomery,2025-05-07,997.28,Delivered,
+195,Johnathan Mitchell,2026-02-15,4356.10,Delivered,"756 Parker Parks
+South Glenn, MH 58894"
+196,Brittany Roy,2025-06-09,2415.24,Delivered,"8075 Henry Rest Suite 021
+Lake Karenville, VI 50798"
+198,Natalie Cisneros,2025-08-04,1862.27,Delivered,"596 James Centers
+New Jonathanmouth, NC 65249"
+200,Victor Allen,2025-10-04,3818.15,Delivered,
