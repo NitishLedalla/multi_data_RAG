@@ -33,6 +33,7 @@ RUN dnf install -y \
     poppler-utils \
     gcc \
     gcc-c++ \
+    libxcb \
     && dnf clean all
 
 # Copy requirements.txt FIRST (layer caching optimization)
