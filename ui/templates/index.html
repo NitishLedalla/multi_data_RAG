@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Multi-Source RAG</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f0f2f5;
+      color: #333;
+    }
+
+    header {
+      background: #1a1a2e;
+      color: white;
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 { font-size: 16px; font-weight: 600; }
+
+    .health-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    #health-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: #aaa;
+    }
+
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 50px);
+    }
+
+    nav {
+      width: 200px;
+      background: #1e1e2f;
+      padding: 20px 0;
+      flex-shrink: 0;
+    }
+
+    nav .section-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: #888;
+      padding: 12px 20px 6px;
+      letter-spacing: 0.08em;
+    }
+
+    nav a {
+      display: block;
+      padding: 8px 20px;
+      color: #bbb;
+      text-decoration: none;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    nav a:hover, nav a.active {
+      background: #2a2a40;
+      color: white;
+    }
+
+    main {
+      flex: 1;
+      padding: 28px;
+      overflow-y: auto;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #1a1a2e;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 22px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    textarea, input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+    }
+
+    textarea { min-height: 80px; }
+
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; color: #777; margin-bottom: 4px; }
+
+    .row { display: flex; gap: 10px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+
+    button {
+      padding: 8px 18px;
+      background: #1a1a2e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    button.danger { background: #c0392b; }
+    button.secondary { background: #555; }
+    button:disabled { background: #bbb; cursor: not-allowed; }
+
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+
+    .tab {
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      background: white;
+      cursor: pointer;
+      font-size: 12px;
+      color: #555;
+    }
+
+    .tab.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
+
+    .result {
+      margin-top: 14px;
+      background: #f9f9f9;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .result.error { color: #c0392b; background: #fef0f0; border-color: #f5c6cb; }
+    .result.success { color: #27ae60; }
+
+    .upload-area {
+      border: 2px dashed #ddd;
+      border-radius: 8px;
+      padding: 28px;
+      text-align: center;
+      cursor: pointer;
+      color: #999;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    .upload-area:hover { border-color: #1a1a2e; color: #555; }
+    .upload-area input { display: none; }
+
+    .spinner {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border: 2px solid #ccc;
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .tag-sql { background: #e8f4fd; color: #2980b9; }
+    .tag-doc { background: #eafaf1; color: #27ae60; }
+    .tag-hybrid { background: #fef9e7; color: #f39c12; }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .stat-box {
+      background: #f5f5f5;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat-box .val { font-size: 22px; font-weight: 700; color: #1a1a2e; }
+    .stat-box .lbl { font-size: 11px; color: #888; margin-top: 4px; }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .service-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      padding: 10px 14px;
+      background: #f9f9f9;
+      border-radius: 6px;
+    }
+
+    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .dot.on { background: #27ae60; }
+    .dot.off { background: #e74c3c; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: #f5f5f5; padding: 8px 12px; text-align: left; font-weight: 600; color: #555; }
+    td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; }
+    tr:last-child td { border-bottom: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Multi-Source RAG + Text-to-SQL</h1>
+  <div class="health-badge" onclick="loadHealth()">
+    <div id="health-dot"></div>
+    <span id="health-label">Checking...</span>
+  </div>
+</header>
+
+<div class="layout">
+  <nav>
+    <div class="section-label">Overview</div>
+    <a onclick="showPage('health')" class="active">Health</a>
+    <a onclick="showPage('info')">Info</a>
+    <a onclick="showPage('stats')">Stats</a>
+
+    <div class="section-label">Documents</div>
+    <a onclick="showPage('upload')">Upload</a>
+    <a onclick="showPage('documents')">List Documents</a>
+
+    <div class="section-label">Query</div>
+    <a onclick="showPage('query')">Ask Question</a>
+    <a onclick="showPage('query-docs')">Query Documents</a>
+
+    <div class="section-label">SQL</div>
+    <a onclick="showPage('sql-generate')">Generate SQL</a>
+    <a onclick="showPage('sql-pending')">Pending Queries</a>
+
+    <div class="section-label">Cache</div>
+    <a onclick="showPage('cache-stats')">Cache Stats</a>
+    <a onclick="showPage('cache-manage')">Manage Cache</a>
+  </nav>
+
+  <main>
+
+    <!-- HEALTH -->
+    <div class="page active" id="page-health">
+      <div class="page-title">System Health</div>
+      <div class="card">
+        <h3>Services</h3>
+        <div id="services-grid" class="service-grid"><span style="color:#aaa;font-size:13px">Loading...</span></div>
+      </div>
+      <div class="card">
+        <h3>Features</h3>
+        <div id="features-grid" class="service-grid"></div>
+      </div>
+      <div class="card">
+        <h3>Configuration</h3>
+        <div id="config-grid" class="service-grid"></div>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="page" id="page-info">
+      <div class="page-title">API Info</div>
+      <div class="card">
+        <div class="result" id="info-result">Loading...</div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="page" id="page-stats">
+      <div class="page-title">System Stats</div>
+      <div class="card">
+        <div id="stats-grid" class="stat-grid"><span style="color:#aaa;font-size:13px">Loading...</span></div>
+      </div>
+    </div>
+
+    <!-- UPLOAD -->
+    <div class="page" id="page-upload">
+      <div class="page-title">Upload Document</div>
+      <div class="card">
+        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+          <input type="file" id="fileInput" accept=".pdf,.docx,.csv,.json" onchange="handleFileSelect(this)"/>
+          <div id="upload-text">Click to select a PDF, DOCX, CSV, or JSON file</div>
+        </div>
+        <div class="row">
+          <button onclick="uploadFile()" id="upload-btn" disabled>Upload</button>
+        </div>
+        <div class="result" id="upload-result" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- DOCUMENTS LIST -->
+    <div class="page" id="page-documents">
+      <div class="page-title">Uploaded Documents</div>
+      <div class="card">
+        <div class="row" style="margin-top:0;margin-bottom:14px">
+          <button onclick="loadDocuments()">Refresh</button>
+        </div>
+        <div id="docs-table">Loading...</div>
+      </div>
+    </div>
+
+    <!-- QUERY -->
+    <div class="page" id="page-query">
+      <div class="page-title">Ask a Question</div>
+      <div class="card">
+        <div class="tabs">
+          <button class="tab active" onclick="setMode('auto', this)">Auto Route</button>
+          <button class="tab" onclick="setMode('sql', this)">SQL Only</button>
+        </div>
+        <div class="form-group">
+          <label>Your Question</label>
+          <textarea id="query-input" placeholder="e.g. How many customers do we have? / What is our return policy?"></textarea>
+        </div>
+        <div class="row">
+          <button onclick="submitQuery()" id="query-btn">Ask</button>
+          <span style="font-size:12px;color:#aaa">Cmd+Enter to submit</span>
+        </div>
+        <div class="result" id="query-result" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- QUERY DOCUMENTS -->
+    <div class="page" id="page-query-docs">
+      <div class="page-title">Query Documents</div>
+      <div class="card">
+        <div class="form-group">
+          <label>Question</label>
+          <textarea id="doc-query-input" placeholder="e.g. What is the return policy?"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Top K Results</label>
+          <input type="number" id="doc-top-k" value="3" min="1" max="10" style="width:80px"/>
+        </div>
+        <div class="row">
+          <button onclick="submitDocQuery()" id="doc-query-btn">Search</button>
+        </div>
+        <div class="result" id="doc-query-result" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- SQL GENERATE -->
+    <div class="page" id="page-sql-generate">
+      <div class="page-title">Generate SQL</div>
+      <div class="card">
+        <div class="form-group">
+          <label>Question</label>
+          <textarea id="sql-input" placeholder="e.g. How many orders were placed this month?"></textarea>
+        </div>
+        <div class="row">
+          <button onclick="generateSQL()" id="sql-btn">Generate SQL</button>
+        </div>
+        <div class="result" id="sql-result" style="display:none"></div>
+      </div>
+      <div class="card" id="sql-execute-card" style="display:none">
+        <h3>Execute Query</h3>
+        <p style="font-size:13px;color:#666;margin-bottom:12px">Review the generated SQL above then execute it.</p>
+        <div class="row" style="margin-top:0">
+          <button onclick="executeSQL()" id="sql-execute-btn">Execute</button>
+        </div>
+        <div class="result" id="sql-execute-result" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- SQL PENDING -->
+    <div class="page" id="page-sql-pending">
+      <div class="page-title">Pending SQL Queries</div>
+      <div class="card">
+        <div class="row" style="margin-top:0;margin-bottom:14px">
+          <button onclick="loadPending()">Refresh</button>
+        </div>
+        <div id="pending-table">Loading...</div>
+      </div>
+    </div>
+
+    <!-- CACHE STATS -->
+    <div class="page" id="page-cache-stats">
+      <div class="page-title">Cache Stats</div>
+      <div class="card">
+        <h3>Embedding Cache</h3>
+        <div class="result" id="cache-stats-result">Loading...</div>
+      </div>
+      <div class="card">
+        <h3>Query Cache</h3>
+        <div class="result" id="cache-query-stats-result">Loading...</div>
+      </div>
+    </div>
+
+    <!-- CACHE MANAGE -->
+    <div class="page" id="page-cache-manage">
+      <div class="page-title">Manage Cache</div>
+      <div class="card">
+        <h3>Clear Embedding Cache</h3>
+        <p style="font-size:13px;color:#666;margin-bottom:12px">Clears all cached document embeddings. Documents will need to be re-embedded on next query.</p>
+        <button class="danger" onclick="clearCache()">Clear Embedding Cache</button>
+        <div class="result" id="cache-clear-result" style="display:none;margin-top:12px"></div>
+      </div>
+      <div class="card">
+        <h3>Clear Query Cache</h3>
+        <p style="font-size:13px;color:#666;margin-bottom:12px">Clears cached query results. Queries will re-run against the backend on next request.</p>
+        <button class="danger" onclick="clearQueryCache()">Clear Query Cache</button>
+        <div class="result" id="cache-query-clear-result" style="display:none;margin-top:12px"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  let queryMode = 'auto';
+  let pendingQueryId = null;
+
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    event.target.classList.add('active');
+
+    // Auto-load data for certain pages
+    if (name === 'health') loadHealth();
+    if (name === 'info') loadInfo();
+    if (name === 'stats') loadStats();
+    if (name === 'documents') loadDocuments();
+    if (name === 'sql-pending') loadPending();
+    if (name === 'cache-stats') loadCacheStats();
+  }
+
+  function setMode(mode, el) {
+    queryMode = mode;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function setLoading(btn, text) {
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner"></span>${text}`;
+  }
+
+  function resetBtn(btn, text) {
+    btn.disabled = false;
+    btn.textContent = text;
+  }
+
+  function showResult(el, content, type = '') {
+    el.style.display = 'block';
+    el.className = 'result ' + type;
+    if (typeof content === 'string') el.innerHTML = content;
+    else el.textContent = JSON.stringify(content, null, 2);
+  }
+
+  async function loadHealth() {
+    try {
+      const r = await fetch('/health');
+      const d = await r.json();
+      const dot = document.getElementById('health-dot');
+      const label = document.getElementById('health-label');
+
+      if (d.status === 'healthy') {
+        dot.style.background = '#27ae60';
+        label.textContent = 'Healthy';
+      } else {
+        dot.style.background = '#e74c3c';
+        label.textContent = 'Degraded';
+      }
+
+      // Services
+      const sg = document.getElementById('services-grid');
+      sg.innerHTML = Object.entries(d.services || {}).map(([k, v]) =>
+        `<div class="service-item"><div class="dot ${v ? 'on' : 'off'}"></div>${k.replace(/_/g,' ')}</div>`
+      ).join('');
+
+      // Features
+      const fg = document.getElementById('features-grid');
+      fg.innerHTML = Object.entries(d.features_available || {}).map(([k, v]) =>
+        `<div class="service-item"><div class="dot ${v ? 'on' : 'off'}"></div>${k.replace(/_/g,' ')}</div>`
+      ).join('');
+
+      // Config
+      const cg = document.getElementById('config-grid');
+      cg.innerHTML = Object.entries(d.configuration || {}).map(([k, v]) =>
+        `<div class="service-item"><div class="dot ${v ? 'on' : 'off'}"></div>${k.replace(/_/g,' ')}</div>`
+      ).join('');
+
+    } catch(e) {
+      document.getElementById('health-dot').style.background = '#e74c3c';
+      document.getElementById('health-label').textContent = 'Offline';
+    }
+  }
+
+  async function loadInfo() {
+    try {
+      const r = await fetch('/info');
+      const d = await r.json();
+      document.getElementById('info-result').textContent = JSON.stringify(d, null, 2);
+    } catch(e) {
+      document.getElementById('info-result').textContent = 'Failed to load: ' + e.message;
+    }
+  }
+
+  async function loadStats() {
+    try {
+      const r = await fetch('/stats');
+      const d = await r.json();
+      const grid = document.getElementById('stats-grid');
+      const flat = flattenObj(d);
+      grid.innerHTML = Object.entries(flat).map(([k,v]) =>
+        `<div class="stat-box"><div class="val">${v}</div><div class="lbl">${k.replace(/_/g,' ')}</div></div>`
+      ).join('');
+    } catch(e) {
+      document.getElementById('stats-grid').textContent = 'Failed: ' + e.message;
+    }
+  }
+
+  function flattenObj(obj, prefix='') {
+    return Object.entries(obj).reduce((acc, [k, v]) => {
+      const key = prefix ? `${prefix} ${k}` : k;
+      if (typeof v === 'object' && v !== null && !Array.isArray(v)) Object.assign(acc, flattenObj(v, key));
+      else acc[key] = v;
+      return acc;
+    }, {});
+  }
+
+  function handleFileSelect(input) {
+    const file = input.files[0];
+    if (file) {
+      document.getElementById('upload-text').textContent = `Selected: ${file.name}`;
+      document.getElementById('upload-btn').disabled = false;
+    }
+  }
+
+  async function uploadFile() {
+    const file = document.getElementById('fileInput').files[0];
+    if (!file) return;
+    const btn = document.getElementById('upload-btn');
+    const result = document.getElementById('upload-result');
+    setLoading(btn, 'Uploading...');
+    showResult(result, 'Processing document...');
+    const form = new FormData();
+    form.append('file', file);
+    try {
+      const r = await fetch('/upload', { method: 'POST', body: form });
+      const d = await r.json();
+      if (r.ok) showResult(result, `Uploaded successfully!\nID: ${d.document_id || '-'}\nChunks: ${d.chunks_created || '-'}`, 'success');
+      else showResult(result, d.detail?.message || JSON.stringify(d, null, 2), 'error');
+    } catch(e) {
+      showResult(result, 'Upload failed: ' + e.message, 'error');
+    }
+    resetBtn(btn, 'Upload');
+  }
+
+  async function loadDocuments() {
+    const el = document.getElementById('docs-table');
+    el.innerHTML = 'Loading...';
+    try {
+      const r = await fetch('/documents');
+      const d = await r.json();
+      const docs = d.documents || [];
+      if (!docs.length) { el.textContent = 'No documents uploaded yet.'; return; }
+      el.innerHTML = `<table>
+        <tr><th>ID</th><th>Filename</th><th>Chunks</th><th>Uploaded</th></tr>
+        ${docs.map(doc => `<tr>
+          <td style="font-family:monospace;font-size:11px">${doc.id || '-'}</td>
+          <td>${doc.filename || doc.name || '-'}</td>
+          <td>${doc.chunk_count || doc.chunks || '-'}</td>
+          <td>${doc.created_at || doc.uploaded_at || '-'}</td>
+        </tr>`).join('')}
+      </table>`;
+    } catch(e) {
+      el.textContent = 'Failed: ' + e.message;
+    }
+  }
+
+  async function submitQuery() {
+    const question = document.getElementById('query-input').value.trim();
+    if (!question) return;
+    const btn = document.getElementById('query-btn');
+    const result = document.getElementById('query-result');
+    setLoading(btn, 'Thinking...');
+    showResult(result, 'Processing...');
+    try {
+      const r = await fetch('/query', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question, auto_approve_sql: true })
+      });
+      const d = await r.json();
+      if (r.ok) {
+        const route = d.query_type || d.route || '';
+        const tagClass = route === 'SQL' ? 'tag-sql' : route === 'DOCUMENTS' ? 'tag-doc' : 'tag-hybrid';
+        const tag = route ? `<span class="tag ${tagClass}">${route}</span>\n\n` : '';
+        const answer = d.answer || d.response || d.result || JSON.stringify(d, null, 2);
+        result.style.display = 'block';
+        result.className = 'result';
+        result.innerHTML = tag + answer;
+      } else {
+        showResult(result, d.detail?.message || d.detail || JSON.stringify(d, null, 2), 'error');
+      }
+    } catch(e) {
+      showResult(result, 'Failed: ' + e.message, 'error');
+    }
+    resetBtn(btn, 'Ask');
+  }
+
+  async function submitDocQuery() {
+    const question = document.getElementById('doc-query-input').value.trim();
+    const topK = document.getElementById('doc-top-k').value;
+    if (!question) return;
+    const btn = document.getElementById('doc-query-btn');
+    const result = document.getElementById('doc-query-result');
+    setLoading(btn, 'Searching...');
+    showResult(result, 'Searching documents...');
+    try {
+      const r = await fetch('/query/documents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question, top_k: parseInt(topK) })
+      });
+      const d = await r.json();
+      if (r.ok) showResult(result, d.answer || JSON.stringify(d, null, 2));
+      else showResult(result, d.detail?.message || JSON.stringify(d, null, 2), 'error');
+    } catch(e) {
+      showResult(result, 'Failed: ' + e.message, 'error');
+    }
+    resetBtn(btn, 'Search');
+  }
+
+  async function generateSQL() {
+    const question = document.getElementById('sql-input').value.trim();
+    if (!question) return;
+    const btn = document.getElementById('sql-btn');
+    const result = document.getElementById('sql-result');
+    setLoading(btn, 'Generating...');
+    showResult(result, 'Generating SQL...');
+    document.getElementById('sql-execute-card').style.display = 'none';
+    pendingQueryId = null;
+    try {
+      const r = await fetch('/query/sql/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
+      const d = await r.json();
+      if (r.ok) {
+        pendingQueryId = d.query_id;
+        showResult(result, `SQL Generated:\n\n${d.sql || JSON.stringify(d, null, 2)}`);
+        document.getElementById('sql-execute-card').style.display = 'block';
+        document.getElementById('sql-execute-result').style.display = 'none';
+      } else {
+        showResult(result, d.detail?.message || JSON.stringify(d, null, 2), 'error');
+      }
+    } catch(e) {
+      showResult(result, 'Failed: ' + e.message, 'error');
+    }
+    resetBtn(btn, 'Generate SQL');
+  }
+
+  async function executeSQL() {
+    if (!pendingQueryId) return;
+    const btn = document.getElementById('sql-execute-btn');
+    const result = document.getElementById('sql-execute-result');
+    setLoading(btn, 'Executing...');
+    showResult(result, 'Executing query...');
+    try {
+      const r = await fetch('/query/sql/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query_id: pendingQueryId })
+      });
+      const d = await r.json();
+      if (r.ok) showResult(result, JSON.stringify(d.results || d, null, 2), 'success');
+      else showResult(result, d.detail?.message || JSON.stringify(d, null, 2), 'error');
+    } catch(e) {
+      showResult(result, 'Failed: ' + e.message, 'error');
+    }
+    resetBtn(btn, 'Execute');
+  }
+
+  async function loadPending() {
+    const el = document.getElementById('pending-table');
+    el.innerHTML = 'Loading...';
+    try {
+      const r = await fetch('/query/sql/pending');
+      const d = await r.json();
+      const queries = d.pending_queries || [];
+      if (!queries.length) { el.textContent = 'No pending SQL queries.'; return; }
+      el.innerHTML = `<table>
+        <tr><th>ID</th><th>Question</th><th>SQL</th><th>Execute</th></tr>
+        ${queries.map(q => `<tr>
+          <td style="font-family:monospace;font-size:11px">${q.query_id || '-'}</td>
+          <td>${q.question || '-'}</td>
+          <td style="font-family:monospace;font-size:11px">${q.sql || '-'}</td>
+          <td><button onclick="executePending('${q.query_id}')">Execute</button></td>
+        </tr>`).join('')}
+      </table>`;
+    } catch(e) {
+      el.textContent = 'Failed: ' + e.message;
+    }
+  }
+
+  async function executePending(queryId) {
+    try {
+      const r = await fetch('/query/sql/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query_id: queryId })
+      });
+      const d = await r.json();
+      alert(JSON.stringify(d.results || d, null, 2));
+      loadPending();
+    } catch(e) {
+      alert('Failed: ' + e.message);
+    }
+  }
+
+  async function loadCacheStats() {
+    try {
+      const r1 = await fetch('/cache/stats');
+      const d1 = await r1.json();
+      document.getElementById('cache-stats-result').textContent = JSON.stringify(d1, null, 2);
+    } catch(e) {
+      document.getElementById('cache-stats-result').textContent = 'Failed: ' + e.message;
+    }
+    try {
+      const r2 = await fetch('/cache/query/stats');
+      const d2 = await r2.json();
+      document.getElementById('cache-query-stats-result').textContent = JSON.stringify(d2, null, 2);
+    } catch(e) {
+      document.getElementById('cache-query-stats-result').textContent = 'Failed: ' + e.message;
+    }
+  }
+
+  async function clearCache() {
+    const result = document.getElementById('cache-clear-result');
+    showResult(result, 'Clearing...');
+    try {
+      const r = await fetch('/cache/clear', { method: 'DELETE' });
+      const d = await r.json();
+      showResult(result, d.message || JSON.stringify(d), r.ok ? 'success' : 'error');
+    } catch(e) {
+      showResult(result, 'Failed: ' + e.message, 'error');
+    }
+  }
+
+  async function clearQueryCache() {
+    const result = document.getElementById('cache-query-clear-result');
+    showResult(result, 'Clearing...');
+    try {
+      const r = await fetch('/cache/query', { method: 'DELETE' });
+      const d = await r.json();
+      showResult(result, d.message || JSON.stringify(d), r.ok ? 'success' : 'error');
+    } catch(e) {
+      showResult(result, 'Failed: ' + e.message, 'error');
+    }
+  }
+
+  // Cmd+Enter to submit query
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('query-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && e.metaKey) submitQuery();
+    });
+    loadHealth();
+  });
+</script>
+
+</body>
+</html>
