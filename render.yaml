@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: rag-ui
+    runtime: python
+    rootDir: ui
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: API_URL
+        value: https://4lzdm6goqnww5ocajj6gml5bse0tuwcm.lambda-url.us-east-1.on.aws
